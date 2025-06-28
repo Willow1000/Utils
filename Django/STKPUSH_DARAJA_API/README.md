@@ -66,10 +66,8 @@ Content-Type: application/x-www-form-urlencoded
 If successful, redirects to:
 GET /receipt/?checkout_request_id=<CheckoutRequestID>
 
-📬 Callback Payload (Handled at /mpesa_callback/)
-json
-Copy
-Edit
+## 📬 Callback Payload (Handled at /mpesa_callback/)
+
 {
   "Body": {
     "stkCallback": {
@@ -88,41 +86,48 @@ Edit
     }
   }
 }
-🧱 Models
-MpesaTransaction
-Field	Description
-checkout_request_id	M-Pesa session identifier
-result_code	0 for success
-mpesa_receipt_number	Unique M-Pesa receipt number
-amount	Paid amount
-phone_number	User's phone number
-created_at	Timestamp
+
+## 🧱 Models
+# MpesaTransaction
+| Field                  | Description                  |
+| ---------------------- | ---------------------------- |
+| `checkout_request_id`  | M-Pesa session identifier    |
+| `result_code`          | `0` for success              |
+| `mpesa_receipt_number` | Unique M-Pesa receipt number |
+| `amount`               | Paid amount                  |
+| `phone_number`         | User's phone number          |
+| `created_at`           | Timestamp                    |
+
 
 Method:
 
-python
-Copy
-Edit
 def is_successful(self):
     return self.result_code == 0
-Transactions
+
+    
+# Transactions
 Tracks pending/completed payments related to a product.
 
-Field	Description
-product	FK to ParkingSpace
-amount	Integer, transaction value
-start_time	Parking start
-expiry_time	Parking end
-is_valid	Flag set True upon callback
+| Field         | Description                   |
+| ------------- | ----------------------------- |
+| `product`     | FK to `ParkingSpace`          |
+| `amount`      | Integer, transaction value    |
+| `start_time`  | Parking start                 |
+| `expiry_time` | Parking end                   |
+| `is_valid`    | Flag set `True` upon callback |
 
-🧩 Views Overview
-View	Purpose
-pay	Handles the POST to trigger STK Push
-mpesa_callback	Webhook endpoint for M-Pesa to hit after payment
-MpesaReceiptView	Displays transaction receipt based on ID
-PaymentView	Renders initial payment form with amount & slot
 
-✅ To Do / Improvements
+## 🧩 Views Overview
+
+| View               | Purpose                                          |
+| ------------------ | ------------------------------------------------ |
+| `pay`              | Handles the POST to trigger STK Push             |
+| `mpesa_callback`   | Webhook endpoint for M-Pesa to hit after payment |
+| `MpesaReceiptView` | Displays transaction receipt based on ID         |
+| `PaymentView`      | Renders initial payment form with amount & slot  |
+
+
+## ✅ To Do / Improvements
 Add proper phone validation for international formats
 
 Allow dynamic AccountReference and TransactionDesc
@@ -133,17 +138,17 @@ Add test cases or mock sandbox responses
 
 Optionally: Encrypt sensitive fields (phone, receipt, etc.)
 
-🛡️ Security Notes
+## 🛡️ Security Notes
 Ensure .env variables are NEVER pushed to version control.
 
 Set callback URL to HTTPS and verify request authenticity if needed.
 
 Consider rate limiting the STK push request endpoint.
 
-🤝 Contribution
+## 🤝 Contribution
 Feel free to fork, raise issues, or suggest optimizations via PR.
 
-📜 License
+## 📜 License
 MIT — use, modify, break, and fix freely.
 
 
